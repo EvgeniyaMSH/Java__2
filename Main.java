@@ -1,36 +1,37 @@
-package com.company;
+package Phone;
 
-public class Main {
-    //1. Напишите метод, на вход которого подаётся двумерный строковый массив размером 4х4,
-    // при подаче массива другого размера необходимо бросить исключение MyArraySizeException.
-    //2. Далее метод должен пройтись по всем элементам массива, преобразовать в int, и просуммировать.
-    // Если в каком-то элементе массива преобразование не удалось (например, в ячейке лежит символ или текст вместо числа),
-    // должно быть брошено исключение MyArrayDataException, с детализацией в какой именно ячейке лежат неверные данные.
-    //3. В методе main() вызвать полученный метод, обработать возможные исключения MySizeArrayException и MyArrayDataException,
-    // и вывести результат расчета.
-    public static void main(String[] args) throws MyArrayDataException {
-        Object[][] arr;
-        int sum = 0;
-        try {
-            arr = initArray(4,4);
-        } catch (MyArraySizeException e) {
-            e.printStackTrace();
-            return;
+//1. Создать массив с набором слов (10-20 слов, должны встречаться повторяющиеся).
+// Найти и вывести список уникальных слов, из которых состоит массив (дубликаты не считаем).
+// Посчитать сколько раз встречается каждое слово.
+
+public static void main(String[] args) {
+        String[] words = {"Один","Два","Три","Четыре","Пять","Шесть","Семь","Восемь","Девять","Десять";
+        HashMap <String, Integer> hm = new HashMap<>();
+        for(String word: words) {
+        Integer res = hm.get(word);
+        hm.put(word, res == null ? 1 : res + 1);
         }
-        for (int i = 0; i < arr.length; i++)
-            for (int j = 0; j < arr[i].length; j++)
-                try {
-                    sum += (int) arr[i][j];
-                } catch (RuntimeException e) {
-                    throw new MyArrayDataException("Ячейка [" + i + "],[" + j + "] находится тип отличный от int.");
-                }
-        System.out.println("Сумма массива = " + sum);
+
+//2. Написать простой класс ТелефонныйСправочник, который хранит в себе список фамилий и телефонных номеров.
+// В этот телефонный справочник с помощью метода add() можно добавлять записи. С помощью метода get() искать номер телефона по фамилии.
+// Следует учесть, что под одной фамилией может быть несколько телефонов (в случае однофамильцев),
+// тогда при запросе такой фамилии должны выводиться все телефоны.
+public class Phone {
+    private HashMap<String, ArrayList<String>> phone = new HashMap<>();
+
+    public void add(String name, String telephone) {
+        ArrayList<String> telephoneList = phone.get(name);
+        if (telephoneList == null) telephoneList = new ArrayList<>();
+        telephoneList.add(telephone);
+        phone.put(name, telephoneList);
     }
 
-    public static Object[][] initArray(int row, int col) throws MyArraySizeException {
-        if (row != 4 || col != 4) {
-            throw new MyArraySizeException("Массив может быть размером только 4х4");
-        }
-        return new Object[][]{{1,'2',4,3},{1,2,3,4}};
+    public ArrayList<String> get(String name) {
+        return phone.get(name);
     }
+
+    public void info() {
+        System.out.println(phone);
+    }
+
 }
