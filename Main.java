@@ -1,37 +1,50 @@
-package Phone;
+package Lesson_5;
 
-//1. Создать массив с набором слов (10-20 слов, должны встречаться повторяющиеся).
-// Найти и вывести список уникальных слов, из которых состоит массив (дубликаты не считаем).
-// Посчитать сколько раз встречается каждое слово.
+public class MainClass {
+    private static final int SIZE = 10000000;
+    private static final int HALF_SIZE = SIZE / 2;
 
-public static void main(String[] args) {
-        String[] words = {"Один","Два","Три","Четыре","Пять","Шесть","Семь","Восемь","Девять","Десять";
-        HashMap <String, Integer> hm = new HashMap<>();
-        for(String word: words) {
-        Integer res = hm.get(word);
-        hm.put(word, res == null ? 1 : res + 1);
+    public float[] calculate(float[] num) {
+        float[] arr;
+        for (int i = 0; i < arr.length; i++)
+            arr[i] = (float) (arr[i] * Math.sin(0.2f + arr[i] / 5) * Math.cos(0.2f + arr[i] / 5) * Math.cos(0.4f + arr1[i] / 2));
+        float[] num = arr;
+        return num;
+    }
+
+    public void runOneThread() {
+        float[] arr = new float[SIZE];
+        for (int i = 0; i < arr.length; i++) arr[i] = 1.0f;
+        long a = System.currentTimeMillis();
+        calculate(arr);
+        System.out.println("Метод оканчивается: " + (System.currentTimeMillis() - a));
+    }
+
+    public <Metod> void MetodTwo() {
+        System.out.println(array.toString(arr));
+        long a = System.currentTimeMillis();
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = (float)(arr[i] * Math.sin(0.2f + i / 5) * Math.cos(0.2f + i / 5) * Math.cos(0.4f + i / 2));
         }
+        System.out.println(array.toString(arr));
+        System.out.println("The total time for one array is ");
+        System.out.println(System.currentTimeMillis() - a);
 
-//2. Написать простой класс ТелефонныйСправочник, который хранит в себе список фамилий и телефонных номеров.
-// В этот телефонный справочник с помощью метода add() можно добавлять записи. С помощью метода get() искать номер телефона по фамилии.
-// Следует учесть, что под одной фамилией может быть несколько телефонов (в случае однофамильцев),
-// тогда при запросе такой фамилии должны выводиться все телефоны.
-public class Phone {
-    private HashMap<String, ArrayList<String>> phone = new HashMap<>();
+        new Thread() {
+            public void run() {
+                float[] a1 = calculate(arr1);
+                System.arraycopy(a1, 0, arr1, 0, a1.length);
+            }
+        }.start();
 
-    public void add(String name, String telephone) {
-        ArrayList<String> telephoneList = phone.get(name);
-        if (telephoneList == null) telephoneList = new ArrayList<>();
-        telephoneList.add(telephone);
-        phone.put(name, telephoneList);
+        new Thread() {
+            public void run() {
+                float[] a2 = calculate(arr2);
+                System.arraycopy(a2, 0, arr2, 0, a2.length);
+            }
+        }.start();
+
+        System.arraycopy(arr1, 0, arr, 0, HALF_SIZE);
+        System.arraycopy(arr2, 0, arr, HALF_SIZE, HALF_SIZE);
+        System.out.println("Метод заканчивается: " + (System.currentTimeMillis() - a));
     }
-
-    public ArrayList<String> get(String name) {
-        return phone.get(name);
-    }
-
-    public void info() {
-        System.out.println(phone);
-    }
-
-}
